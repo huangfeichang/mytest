@@ -39,20 +39,35 @@ public class ArithmeticDemo {
         }
         test[left] = test[i];
         test[i] = baseV;
-
         quickSort(test, left, i - 1);
         quickSort(test, i + 1, right);
     }
 
     // 插入排序 时间复杂度O(n)
     public static void insertSort(int[] test) {
-        for (int i = 1; i < test.length; i++) {
+        for (int i = 0; i < test.length; i++) {
             for (int j = i; j > 0; j--) {
                 if (test[j] < test[j - 1]) {
                     int temp = test[j];
-                    test[j] = test[j - 1];
+                    test[j] = test[j - 1] ;
                     test[j - 1] = temp;
                 }
+            }
+        }
+    }
+
+    // 希尔排序【缩小增量排序】【插入排序改进版】
+    public static void shellSort(int[] test) {
+        // 选取增量步长
+        for (int i = test.length / 2; i > 0; i /= 2) {
+            // 从步长位置开始向后一个一个比较
+            for (int j = i; j < test.length; j++) {
+                int temp = test[j];
+                while (j - i > 0 && test[j - i] > temp) {
+                    test[j] = test[j - i];
+                    j = j - i;
+                }
+                test[j] = temp;
             }
         }
     }
@@ -60,28 +75,55 @@ public class ArithmeticDemo {
     // 选择排序 找出最小的与参考位置之交换
     public static void selectSort(int[] test) {
         for (int i = 0; i < test.length; i++) {
-            int minValIndex = i;
-            // 循环找出最小值的索引位置
+            int minIndex = i;
             for (int j = i; j < test.length; j++) {
-                if (test[j] < test[minValIndex]) {
-                    minValIndex = j;
+                if (test[j] < test[minIndex]) {
+                    minIndex = j;
                 }
             }
-            // 交换位置
-            int temp = test[i];
-            test[i] = test[minValIndex];
-            test[minValIndex] = temp;
+            int temp = test[minIndex];
+            test[minIndex] = test[i];
+            test[i] = temp;
         }
     }
 
-    // 希尔排序
+    // 归并排序
+    public static void mergerSort(int[] test, int start, int end) {
+        if (start < end) {
+            int mid = (start + end) / 2;
+            mergerSort(test, start, mid);
+            mergerSort(test, mid + 1, end);
+            int[] temp = new int[test.length];
+            int p1 = start;
+            int p2 = mid + 1;
+            int k = 0;
+            while (p1 <= mid && p2 <= end) {
+                if (test[p1] <= test[p2]) {
+                    temp[k++] = test[p1++];
+                } else {
+                    temp[k++] = test[p2++];
+                }
+            }
+            while (p1 <= mid) {
+                temp[k++] = test[p1++];
+            }
+            while (p2 <= end) {
+                temp[k++] = test[p2++];
+            }
+            for (int i = 0; i < k; i++) {
+                test[start + i] = temp[i];
+            }
+        }
 
+    }
 
     public static void main(String[] args) {
 //         bubbleSort(test);
-        // quickSort(test, 0 , test.length - 1);
+//         quickSort(test, 0 , test.length - 1);
 //        insertSort(test);
-        selectSort(test);
+//        selectSort(test);
+//        shellSort(test);
+        mergerSort(test, 0 , test.length - 1);
         for (int i = 0; i < test.length; i++) {
             System.err.println(test[i]);
         }
