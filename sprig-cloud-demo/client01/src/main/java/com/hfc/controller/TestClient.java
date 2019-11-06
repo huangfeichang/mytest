@@ -49,6 +49,11 @@ public class TestClient {
 
     @RequestMapping(value = "/zuulTest/{name}")
     public String zuulTest(@PathVariable("name") String name) {
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         logger.info("my name  is {}", name);
         return name;
     }

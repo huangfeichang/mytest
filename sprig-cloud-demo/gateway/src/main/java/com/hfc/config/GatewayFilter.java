@@ -24,7 +24,7 @@ import java.util.Enumeration;
 public class GatewayFilter extends ZuulFilter {
     @Override
     public String filterType() {
-        return "post";
+        return "route";
     }
 
     @Override
@@ -39,12 +39,7 @@ public class GatewayFilter extends ZuulFilter {
 
     @Override
     public Object run() throws ZuulException {
-        RequestContext requestContext = RequestContext.getCurrentContext();
-        HttpServletRequest httpServletRequest = requestContext.getRequest();
-        Enumeration<String> stringEnumeration=  httpServletRequest.getParameterNames();
-        while (stringEnumeration.hasMoreElements()) {
-            System.err.println(stringEnumeration.nextElement());
-        }
+        System.err.println("=====================");
         return null;
     }
 }
