@@ -24,7 +24,7 @@ public class EsTest {
     private BaseElasticService baseElasticService;
 
     @Test
-    public void test() {
+    public void createIndex() {
         String jsonString = "{" +
                 "\"user\":\"kimchy\"," +
                 "\"postDate\":\"2013-01-30\"," +
@@ -35,7 +35,7 @@ public class EsTest {
 
     @Test
     public void indexIsExists() throws Exception {
-        baseElasticService.isExistsIndex("twitter22");
+        baseElasticService.isExistsIndex("twitter2");
     }
 
     @Test

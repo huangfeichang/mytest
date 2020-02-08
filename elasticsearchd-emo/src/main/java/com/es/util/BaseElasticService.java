@@ -49,13 +49,13 @@ public class BaseElasticService {
      */
     public void createIndex(String idxName,String idxSQL){
         try {
-            if (!this.indexExist(idxName)) {
-                log.error(" idxName={} 已经存在,idxSql={}",idxName,idxSQL);
+            if (this.indexExist(idxName)) {
+                System.err.println(" idxName=" + idxName+ " 已经存在");
                 return;
             }
             CreateIndexRequest request = new CreateIndexRequest(idxName);
             buildSetting(request);
-            request.mapping(JSON.toJSONString(new IdxVo().getIdxSql()), XContentType.JSON);
+//            request.mapping(JSON.toJSONString(new IdxVo().getIdxSql()), XContentType.JSON);
 //            request.settings() 手工指定Setting
             CreateIndexResponse res = restHighLevelClient.indices().create(request, RequestOptions.DEFAULT);
             if (!res.isAcknowledged()) {
@@ -81,7 +81,8 @@ public class BaseElasticService {
         request.local(false);
         request.humanReadable(true);
         request.includeDefaults(false);
-        request.indicesOptions(IndicesOptions.lenientExpandOpen());
+        //设置IndicesOptions控制如何解决不可用的索引以及如何扩展通配符表达式
+//        request.indicesOptions(IndicesOptions.lenientExpandOpen());
         boolean exists = restHighLevelClient.indices().exists(request, RequestOptions.DEFAULT);
         System.err.println("索引" + idxName + "存在？" + exists);
         return exists;
@@ -221,7 +222,7 @@ public class BaseElasticService {
     public void deleteIndex(String idxName) {
         try {
             if (!this.indexExist(idxName)) {
-                log.error(" idxName={} 已经存在",idxName);
+                System.err.println(" idxName = " + idxName + " bu 存在");
                 return;
             }
             restHighLevelClient.indices().delete(new DeleteIndexRequest(idxName), RequestOptions.DEFAULT);
